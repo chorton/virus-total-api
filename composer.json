@@ -1,10 +1,14 @@
 {
-    "name": "moay/virus-total-api",
+    "name": "chorton/virus-total-api",
     "description": "Very simple VirusTotal api wrapper for Laravel 5",
     "authors": [
         {
             "name": "moay",
             "email": "mv@moay.de"
+        },
+        {
+            "name": "chorton",
+            "email": "chad.horton@gmail.com"
         }
     ],
     "license": "MIT",
@@ -15,7 +19,7 @@
     },
     "autoload": {
         "psr-0": {
-            "moay\\VirusTotalApi\\": "src/"
+            "chorton\\VirusTotalApi\\": "src/"
         }
     }
 }
