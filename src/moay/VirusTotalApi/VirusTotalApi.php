@@ -1,13 +1,45 @@
 <?php namespace moay\VirusTotalApi;
  
 class VirusTotalApi {
-    
+
     /**
      * Scan one or multiple urls via VirusTotal
      * @param  string|array $urls The urls to scan
      * @return array  The information returned by VirusTotal
      */
     public static function scanUrl($urls){
+        // The api key must be set!
+        $apikey = config("virus-total-api.api_key");
+        if(!$apikey)
+        {
+            throw new \Exception("Please setup your VirusTotal api key to use the api.", 1);
+        }
+
+        // Prepare the url scanner
+        $urlscan = new \VirusTotal\Url($apikey);
+
+        // Try/Catch to get rate limit exceptions thrown by the api wrapper
+        try {
+            $scanRequest = $urlscan->scan($urls);
+        } catch (\Exception $e) {
+            if ($e instanceof \VirusTotal\Exceptions\RateLimitException) 
+            {
+                return ['success'=>false, 'error'=>'rate limit exceeded'];
+            }
+            else
+            {
+            throw new \Exception("Please setup a valid VirusTotal api key to use the api.", 1);
+            }
+        }
+        return array_merge(['success'=>true], $scanRequest);
+    }
+
+    /**
+     * Scan one or multiple urls via VirusTotal
+     * @param  string|array $urls The urls to scan
+     * @return array  The information returned by VirusTotal
+     */
+    public static function urlReport($urls){
         // The api key must be set!
         $apikey = config("virus-total-api.api_key");
         if(!$apikey)
